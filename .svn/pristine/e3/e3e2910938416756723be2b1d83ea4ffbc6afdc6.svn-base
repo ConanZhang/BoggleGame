@@ -1,0 +1,41 @@
+Name: April Martin & Conan Zhang
+Dates: 
+	12-1:	3 hours of accomplishing nothing because GUI's are not the bee's knees.
+	12-2:	4 hours of accomplishing nothing because GUI's are not the cat's pajamas.
+	12-4:	2 hours of accomplishing nothing because GUI's are not the dog's bollocks.
+			3.5 hours of accomplishing nothing because GUI's are not the cow's end.
+	12-5:	3 hours of accomplishing nothing because GUI's are not the string's socket.
+			4.5 hours of making 
+
+		 
+Time Estimates for Completion:
+	April: 10 hours (assuming that something would go catastrophically wrong)
+	Conan: 8 hours
+
+
+Notes:
+	This assignment proved way more difficult than we anticipated. Like, WAAAY more difficult. 
+	There was one very simple reason for this:
+		GUI's.
+		We HATE gui's. 
+	To be precise, we hate having to implement GUI's that we haven't learned how to use, with only one
+	week to gain that information and a VERY STEEP LEARNING CURVE. I find it comical that Jim thought
+	WPF forms would be, and I quote, "no different" from Windows Forms as far as the assignment was 
+	concerned. I'm laughing. Yes, this bitter sound is laughter. You might think it sounds like
+	crying, but you're wrong.'
+
+	I don't know how many hours we wasted due to our inexpertise with WPF forms, and I don't think
+	I want to - I might just go postal if I ever calculate it out.
+
+
+
+To Do List (which we partially got to)
+	- ******************Worry about what to do when a client disconnects. (Dequeue them from the server)************
+	- Handle the case where the server itself disconnects
+	- IP or Domain name compatible. Read forum post by Mat.
+	- Handle when game ends and sockets are closed
+	- What happens if they cancel, but are already being paired with someone else?
+	- Fix BoggleServer so it doesn't throw an exception when someone logs off'
+	- Ignoring edge case
+	- Handle box overflow
+	- Ignore numbers?

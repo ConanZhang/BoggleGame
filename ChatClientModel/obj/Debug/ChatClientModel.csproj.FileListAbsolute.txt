@@ -1,0 +1,6 @@
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClientModel\bin\Debug\ChatClientModel.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClientModel\bin\Debug\ChatClientModel.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClientModel\bin\Debug\StringSocket.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClientModel\obj\Debug\ChatClientModel.csprojResolveAssemblyReference.cache
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClientModel\obj\Debug\ChatClientModel.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClientModel\obj\Debug\ChatClientModel.pdb

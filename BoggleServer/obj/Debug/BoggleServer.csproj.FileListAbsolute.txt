@@ -1,0 +1,17 @@
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleServer\bin\Debug\BoggleServer.dll.config
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleServer\bin\Debug\BoggleServer.XML
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleServer\bin\Debug\BoggleServer.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleServer\bin\Debug\BoggleServer.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleServer\bin\Debug\StringSocketOfficial.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleServer\obj\Debug\BoggleServer.csprojResolveAssemblyReference.cache
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleServer\obj\Debug\BoggleServer.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleServer\obj\Debug\BoggleServer.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\bin\Debug\BoggleServer.dll.config
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\bin\Debug\BoggleServer.XML
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\bin\Debug\BoggleServer.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\bin\Debug\BoggleServer.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\bin\Debug\MySql.Data.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\bin\Debug\StringSocketOfficial.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\obj\Debug\BoggleServer.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\obj\Debug\BoggleServer.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleServer\obj\Debug\BoggleServer.csprojResolveAssemblyReference.cache

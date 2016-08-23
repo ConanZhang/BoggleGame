@@ -1,0 +1,11 @@
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\bin\Debug\ChatClient.exe
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\bin\Debug\ChatClient.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\bin\Debug\ChatClientModel.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\bin\Debug\StringSocket.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\bin\Debug\ChatClientModel.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\obj\Debug\ChatClientView.csprojResolveAssemblyReference.cache
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\obj\Debug\CC.Form1.resources
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\obj\Debug\ChatClient.Properties.Resources.resources
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\obj\Debug\ChatClientView.csproj.GenerateResource.Cache
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\obj\Debug\ChatClient.exe
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\ChatClient\obj\Debug\ChatClient.pdb

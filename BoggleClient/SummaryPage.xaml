@@ -1,0 +1,49 @@
+﻿<Page x:Class="BoggleClient.SummaryPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	  mc:Ignorable="d" 
+	  d:DesignHeight="300" d:DesignWidth="300"
+	Title="SummaryPage">
+
+    <Grid Background="White" Margin="-212,-23,-464,-54">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="89*"/>
+            <RowDefinition Height="29*"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="SummaryLabel" Content="Game Summary" HorizontalAlignment="Left" Margin="125,17,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="AgainButton" Content="Play Again" HorizontalAlignment="Left" Margin="451,30,0,0" VerticalAlignment="Top" Width="75" Click="AgainButton_Click" Grid.Row="1"/>
+        <TextBlock HorizontalAlignment="Left" Margin="120,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="157,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock x:Name="YourLegalCountTextBlock" HorizontalAlignment="Left" Margin="157,250,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="TheirLegalCountTextBlock" HorizontalAlignment="Left" Margin="291,250,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="CommonCountTextBlock" HorizontalAlignment="Left" Margin="432,250,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="YourIllegalCountTextBlock" HorizontalAlignment="Left" Margin="582,250,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="TheirIllegalCountTextBlock" HorizontalAlignment="Left" Margin="721,250,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <Label x:Name="YourLegalWordsLabel" Content="Your legal words:" HorizontalAlignment="Left" Margin="125,71,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TheirLegalWordsTextBlock1" Content="Opponent's legal words:" HorizontalAlignment="Left" Margin="242,71,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="CommonWordsLabel" Content="Shared words:" HorizontalAlignment="Left" Margin="402,71,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="YourIllegalWordsLabel" Content="Your illegal words:" HorizontalAlignment="Left" Margin="545,71,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TheirIllegalWordsLabel" Content="Their illegal words:" HorizontalAlignment="Left" Margin="677,71,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="YourScoreLabel" Content="Your score:" HorizontalAlignment="Left" Margin="457,25,0,0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="YourScoreTextBlock" HorizontalAlignment="Left" Margin="545,30,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <TextBlock x:Name="TheirScoreTextBlock" HorizontalAlignment="Left" Margin="766,27,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top"/>
+        <Label x:Name="TheirScoreLabel" Content="Opponent's score:" HorizontalAlignment="Left" Margin="637,22,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.142,0.577"/>
+        <ScrollViewer HorizontalAlignment="Left" Height="130" Margin="552,102,0,0" VerticalAlignment="Top" Width="100">
+            <TextBlock x:Name="YourIllegalWordsTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="80"><Run Text="Your illega"/><Run Text="l word"/><Run Text="s"/></TextBlock>
+        </ScrollViewer>
+        <ScrollViewer HorizontalAlignment="Left" Height="127" Margin="407,105,0,0" VerticalAlignment="Top" Width="100">
+            <TextBlock x:Name="CommonWordsTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Common words" VerticalAlignment="Top" Width="80"/>
+        </ScrollViewer>
+        <ScrollViewer HorizontalAlignment="Left" Height="130" Margin="263,102,0,0" VerticalAlignment="Top" Width="100">
+            <TextBlock x:Name="TheirLegalWordsTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Their legal words" VerticalAlignment="Top" Width="81"/>
+        </ScrollViewer>
+        <ScrollViewer HorizontalAlignment="Left" Height="141" Margin="140,104,0,0" VerticalAlignment="Top" Width="100">
+            <TextBlock x:Name="YourLegalWordsTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="81" Background="White"><Run Text="Your legal words"/></TextBlock>
+        </ScrollViewer>
+        <ScrollViewer HorizontalAlignment="Left" Height="130" Margin="686,102,0,0" VerticalAlignment="Top" Width="100">
+            <TextBlock x:Name="TheirIllegalWordsTextBlock" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="81"><Run Text="Their illeg"/><Run Text="al words"/></TextBlock>
+        </ScrollViewer>
+    </Grid>
+</Page>

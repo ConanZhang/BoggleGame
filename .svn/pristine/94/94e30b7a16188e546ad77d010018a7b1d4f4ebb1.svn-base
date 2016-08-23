@@ -1,0 +1,226 @@
+﻿// Assignment implementation written by April Martin & Conan Zhang
+// for CS3500 Assignment #9. November, 2014.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CustomNetworking;
+using System.Net.Sockets;
+using System.Text.RegularExpressions;
+
+namespace BoggleClient
+{
+    /// <summary>
+    /// Connects the view and controller of the boggle client.
+    /// Implements the singleton design pattern.
+    /// </summary>
+    public class BoggleClientModel
+    {
+        //Message protocol checks
+        private Regex terminated;
+        private Regex stop;
+        private Regex ignoring;
+        private Regex score;
+        private Regex time;
+        private Regex start;
+
+        // Socket used to communicate and connect with the server. It's null when a connection hasn't been made yet.
+        private StringSocket socket;
+
+        /// Events to create when we receieve specific lines of text.
+        public event Action<String> TerminatedEvent;
+        public event Action<String> IgnoringEvent;
+        public event Action<String> TimeEvent;
+        public event Action<String, String> StartEvent;
+        public event Action<String, String> ScoreEvent;
+        public event Action<String, String, String, String, String, String, String, String, String, String> StopEvent;
+        //    ;
+
+
+        /// <summary>
+        /// Constructor that creates a not yet connected client model.
+        /// </summary>
+        public BoggleClientModel()
+        {
+            socket = null;
+            terminated = new Regex(@"^TERMINATED");
+            stop = new Regex(@"^STOP");
+            ignoring = new Regex(@"^IGNORING");
+            score = new Regex(@"^SCORE");
+            time = new Regex(@"^TIME");
+            start = new Regex(@"^START");
+        }
+
+
+        /// <summary>
+        /// Connect to the server at the given address with the given name.
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="name"></param>
+        public void Connect(string address, String name)
+        {
+            //create new client if one doesn't exist
+            if (socket == null)
+            {
+                TcpClient client = new TcpClient(address, 2000);
+                socket = new StringSocket(client.Client, UTF8Encoding.Default);
+            }
+            socket.BeginSend("PLAY " + name + "\n", (e, p) => { }, null);
+            socket.BeginReceive(LineReceived, null); 
+        }
+
+
+        /// <summary>
+        /// Special connect function that exists SOLELY for the purpose of testing
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="name"></param>
+        public void Connect(string address, int port, String name)
+        {
+            //create new client if one doesn't exist
+            if (socket == null)
+            {
+                TcpClient client = new TcpClient(address, port);
+                socket = new StringSocket(client.Client, UTF8Encoding.Default);
+            }
+            socket.BeginSend("PLAY " + name + "\n", (e, p) => { }, null);
+            socket.BeginReceive(LineReceived, null);
+        }
+
+
+        /// <summary>
+        /// Send a line of text to the server.
+        /// </summary>
+        /// <param name="line"></param>
+        public void SendMessage(String line)
+        {
+            if (socket != null)
+            {
+                socket.BeginSend(line + "\n", (e, p) => { }, null);
+            }
+        }
+
+
+        /// <summary>
+        /// Deal with an arriving line of text.
+        /// </summary>
+        private void LineReceived(String s, Exception e, object p)
+        {
+            if (s==null)
+            {
+                return;
+            }
+            // TERMINATED
+            if (terminated.IsMatch(s) && TerminatedEvent != null)
+            {
+                TerminatedEvent(trimKeyword(s));
+            }
+            // STOP
+            else if (stop.IsMatch(s) && StopEvent != null)
+            {
+                // Regex pattern: Match a space that is preceded by one or more numbers.
+                Regex countStop = new Regex(@"(?<=\d+) ");
+                Regex wordsStop = new Regex(@"\d");
+                // Make an array to hold all the separate items in the summary.
+                string[] summaryItems = new string[10];
+
+                // Remove excess white space
+                s = trimKeyword(s);
+
+                // Loop through the array, adding elements to the summaryItems array and trimming the summary down.
+                int index = 0;
+                int i=0;
+                while (i<9)
+                {
+                    // Find index of the END of the first number
+                    
+                    index = countStop.Match(s).Index;
+                    // Add the number to the array
+                    summaryItems[i++] = s.Substring(0, index + 1) ;
+                    // Trim the count off the whole summary
+                    s = s.Substring(index+1);
+                    // Find index of the END of the first list of words
+                    index = wordsStop.Match(s).Index;
+                    // Add the substring up to the index to the array (it should contain a word list item)
+                    summaryItems[i++] = s.Substring(0, index);
+                    // Trim the list of words off the whole summary
+                    s = s.Substring(index);
+                }
+                // Add the remainder of the string to the array
+                summaryItems[9] = s;
+                StopEvent(summaryItems[0], summaryItems[1], summaryItems[2], summaryItems[3], summaryItems[4],
+                            summaryItems[5], summaryItems[6], summaryItems[7], summaryItems[8], summaryItems[9]);
+
+            }
+            // IGNORING
+            else if(ignoring.IsMatch(s) && IgnoringEvent != null)
+            {
+                IgnoringEvent(trimKeyword(s));
+            }
+            // SCORE
+            else if (score.IsMatch(s) && ScoreEvent != null)
+            {
+                // Isolate the two scores contained in the SCORE message
+                s = trimKeyword(s);
+                String yourScore = s;
+                String theirScore = s;
+                int index = s.IndexOf(' ');
+                yourScore = yourScore.Substring(0, index);
+                theirScore = theirScore.Substring(index);
+                ScoreEvent(yourScore, theirScore);
+            }
+            // TIME
+            else if (time.IsMatch(s) && TimeEvent != null)
+            {
+                TimeEvent(trimKeyword(s));
+            }
+            // START
+            else if (start.IsMatch(s) && StartEvent != null)
+            {
+                // Extract the board setup and opponent name, and send them in the event
+                s = trimKeyword(s);
+                int index = s.IndexOf(' ');
+                String boardSetup = (s.Substring(0, index));
+
+                for (int i=0; i<2; i++)
+                {
+                    index = s.IndexOf(' ');
+                    s = s.Substring(index+1);
+                }
+
+                StartEvent(boardSetup, s);
+                
+                
+            }
+
+            // Begin listening for more input
+            if (socket != null)
+            {
+                socket.BeginReceive(LineReceived, null);
+            }
+        }
+
+
+        // TrimKeyword: helper function that eliminates the keyword from the server's message.
+        private string trimKeyword(string input)
+        {
+            // Otherwise, remove the keyword to isolate the content.
+            int index = input.IndexOf(' ');
+            return input.Substring(index + 1);
+        }
+
+
+        /// <summary>
+        /// Disconnect the socket when needed. Internally handles pending requests.
+        /// </summary>
+        public void closeSocket()
+        {
+            if (socket != null)
+            {
+                socket.Close();
+                socket = null;
+            }
+        }
+    }
+}

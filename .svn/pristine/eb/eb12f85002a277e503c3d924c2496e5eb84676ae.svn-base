@@ -1,0 +1,18 @@
+Name: April Martin & Conan Zhang
+Dates:
+	12-9:  3.5 hours.	We have the structure of the database in place, and we've started writing data to it at the end of each boggle game.
+						The Games table is working fine, but each word is being associated with a different game, so we need to fix that.
+		 
+Time Estimates for Completion:
+	April: 12 hours
+	Conan: 15 hours
+
+
+
+Notes:
+
+To Do List:
+
+To Ask List:
+	How to check status of database without opening a new tab.
+	Web server randomly gets null value after some time.

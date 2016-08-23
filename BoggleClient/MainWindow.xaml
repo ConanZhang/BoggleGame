@@ -1,0 +1,9 @@
+﻿<Window x:Class="BoggleClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="500" Width="1000">
+    <Grid>
+        <Frame x:Name="NavFrame" Content="Frame" HorizontalAlignment="Stretch" Height="320" VerticalAlignment="Stretch" Width="495"/>
+
+    </Grid>
+</Window>

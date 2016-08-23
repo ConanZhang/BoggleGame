@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BoggleClientModel</name>
+    </assembly>
+    <members>
+        <member name="T:BoggleClient.BoggleClientModel">
+            <summary>
+            Connects the view and controller of the boggle client.
+            Implements the singleton design pattern.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleClientModel.#ctor">
+            <summary>
+            Constructor that creates a not yet connected client model.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleClientModel.Connect(System.String,System.String)">
+            <summary>
+            Connect to the server at the given address with the given name.
+            </summary>
+            <param name="address"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:BoggleClient.BoggleClientModel.Connect(System.String,System.Int32,System.String)">
+            <summary>
+            Special connect function that exists SOLELY for the purpose of testing
+            </summary>
+            <param name="address"></param>
+            <param name="port"></param>
+            <param name="name"></param>
+        </member>
+        <member name="M:BoggleClient.BoggleClientModel.SendMessage(System.String)">
+            <summary>
+            Send a line of text to the server.
+            </summary>
+            <param name="line"></param>
+        </member>
+        <member name="M:BoggleClient.BoggleClientModel.LineReceived(System.String,System.Exception,System.Object)">
+            <summary>
+            Deal with an arriving line of text.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleClientModel.closeSocket">
+            <summary>
+            Disconnect the socket when needed. Internally handles pending requests.
+            </summary>
+        </member>
+        <member name="E:BoggleClient.BoggleClientModel.TerminatedEvent">
+            Events to create when we receieve specific lines of text.
+        </member>
+        <member name="E:BoggleClient.BoggleClientModel.IgnoringEvent">
+            <summary>
+            When socket receieves ignore
+            </summary>
+        </member>
+        <member name="E:BoggleClient.BoggleClientModel.TimeEvent">
+            <summary>
+            When socket receieves time
+            </summary>
+        </member>
+        <member name="E:BoggleClient.BoggleClientModel.StartEvent">
+            <summary>
+            When socket receieves start
+            </summary>
+        </member>
+        <member name="E:BoggleClient.BoggleClientModel.ScoreEvent">
+            <summary>
+            When socket receieves score
+            </summary>
+        </member>
+        <member name="E:BoggleClient.BoggleClientModel.StopEvent">
+            <summary>
+            When socket receieves stop
+            </summary>
+        </member>
+    </members>
+</doc>

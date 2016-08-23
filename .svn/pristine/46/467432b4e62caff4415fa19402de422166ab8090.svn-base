@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
+using CustomNetworking;
+using System.Text.RegularExpressions;
+
+namespace BoggleClient
+{
+    public class WebServer
+    {
+        TcpListener server;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public WebServer()
+        {
+            server = new TcpListener(IPAddress.Any, 2500);
+            server.Start();
+            server.BeginAcceptSocket(AcceptConnection, null);
+        }
+
+        // Callback for when a connection request is received
+        private void AcceptConnection(IAsyncResult result)
+        {
+            Socket s = server.EndAcceptSocket(result);
+            StringSocket ss = new StringSocket(s, UTF8Encoding.Default);
+
+            // Start a new thread to deal with this client
+            ss.BeginReceive(receiveURL, ss);
+
+            // Go back to listening for other client connection requests
+            server.BeginAcceptSocket(AcceptConnection, null);
+        }
+
+        // Callback for when a line is received
+        private void receiveURL(String input, Exception e, object payload)
+        {
+            StringSocket ss = (StringSocket) payload;
+            ss.BeginSend("HTTP/1.1 200 OK\n", (ex, o) => { }, null);
+            ss.BeginSend("Connection: close\n", (ex, o) => { }, null);
+            ss.BeginSend("Content-Type: text/html; charset=UTF-8\n", (ex, o) => { }, null);
+            ss.BeginSend("\r\n", (ex, o) => { }, null);
+            ss.BeginSend(getHTML(input), (ex, o) => {}, null);
+        }
+
+        // Function for creating the HTML 
+        private String getHTML(string page)
+        {
+            Regex allGames = new Regex(@"^GET /players HTTP/1.1");
+
+            string html = " <!doctype html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <title>Boggle Records</title> <meta name=\"author\" content=\"April Martin & Conan Zhang\"> </head> <body>";
+
+            // If client requested all games page
+            if (allGames.IsMatch(page))
+            {
+
+                return html;
+            }
+
+
+            return "<h1> HELLO </h1>";
+        }
+    }
+}

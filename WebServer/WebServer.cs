@@ -1,0 +1,337 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
+using CustomNetworking;
+using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
+
+namespace BoggleClient
+{
+    public class WebServer
+    {
+        private String connectionString = "server=atr.eng.utah.edu;database=cs3500_conanz;uid=cs3500_conanz;password=886456555";
+        private TcpListener server;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public WebServer()
+        {
+            server = new TcpListener(IPAddress.Any, 2500);
+            server.Start();
+            server.BeginAcceptSocket(AcceptConnection, null);
+        }
+
+        // Callback for when a connection request is received
+        private void AcceptConnection(IAsyncResult result)
+        {
+            Socket s = server.EndAcceptSocket(result);
+            StringSocket ss = new StringSocket(s, UTF8Encoding.Default);
+
+            // Start a new thread to deal with this client
+            ss.BeginReceive(receiveURL, ss);
+
+            // Go back to listening for other client connection requests
+            server.BeginAcceptSocket(AcceptConnection, null);
+        }
+
+        // Callback for when a line is received
+        private void receiveURL(String input, Exception e, object payload)
+        {
+            StringSocket ss = (StringSocket) payload;
+            ss.BeginSend("HTTP/1.1 200 OK\r\n", (ex, o) => { }, null);
+            ss.BeginSend("Connection: close\r\n", (ex, o) => { }, null);
+            ss.BeginSend("Content-Type: text/html; charset=UTF-8\r\n", (ex, o) => { }, null);
+            ss.BeginSend("\r\n", (ex, o) => { }, null);
+            ss.BeginSend(getHTML(input), (ex, o) => {}, null);
+
+            ss.Close();
+        }
+
+        // Function for creating the HTML 
+        private String getHTML(string page)
+        {
+            Regex http = new Regex(@"HTTP/1.1");
+            Regex allGames = new Regex(@"^(GET /players)");
+            Regex specificPlayer = new Regex(@"^(GET /games\?player=)");
+            Regex specificGame = new Regex(@"^(GET /game\?id=)");
+
+            string html = " <!doctype html> <html lang=\"en\"> <head> <meta charset=\"utf-8\"> <title>Boggle Records</title> <meta name=\"author\" content=\"April Martin & Conan Zhang\"> </head> <body>";
+
+            // If client requested all games page
+            if (http.IsMatch(page) && allGames.IsMatch(page))
+            {
+                return getAllGames(html);
+            }
+            else if (http.IsMatch(page) && specificPlayer.IsMatch(page))
+            {
+                // Extract name from url: 
+                int index = page.IndexOf("=");
+                string name = page.Substring(index + 1);
+
+                index = name.IndexOf(" ");
+                name = name.Substring(0, index);
+
+                return getPlayer(html, name);
+            }
+            else if (http.IsMatch(page) && specificGame.IsMatch(page))
+            {
+                // Extract game number from url and convert to Uint32.
+                int index = page.IndexOf("=");
+                string game = page.Substring(index + 1);
+                index = game.IndexOf(" ");
+                game = game.Substring(0, index);
+
+                UInt32 ugame;
+                UInt32.TryParse(game, out ugame);
+                return getGame(html, ugame);
+            }
+            else
+            {
+                string ErrorMessage = "<h5> Error </h5> <p> Please enter one of the following URLs: </p><ul> <li>/games?player=NAME</li> <li>/players</li> <li>/game?id=GAMENUMBER</li></ul>";
+                return ErrorMessage;
+            }
+        }
+
+        private string getGame(string html, UInt32 game)
+        {
+            html += "<h2> Game # " + game + "</h2>";
+            html += "<table border='1'> <tr><td>Player 1:</td> <td>Player 2:</td> <td>P1 Score:</td> <td>P2 Score:</td> <td>Date:</td> <td>Time:</td> <td>Board setup:</td><td>Time limit:</td> </tr>";
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand command = conn.CreateCommand();
+                    command.CommandText = "SELECT * from Games where Game_ID=" + game ;
+
+                    // Make the first table, which contains everything but the words.
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            html += "<tr> <td>" + reader["P1_name"] + "</td><td> " + reader["P2_name"] + "</td><td>" + reader["P1_score"] + "</td><td>" + reader["P2_score"] + "</td><td>" + reader["Date"] + "</td><td>" + reader["Time"] + "</td><td>" + reader["Setup"] + "</td><td>" + reader["Time_limit"] + "</td></tr>";
+                        }
+                    }
+
+                    // Make the second table, which contains the summary of the words.
+                    html += "</table></br>";
+                    html += "<table border='1'> <tr><td>P1's Legal Words:</td> <td>P2's Legal Words:</td> <td>Shared Words:</td> <td>P1's Illegal Words:</td> <td>P2's Illegal Words:</td> </tr><tr><td>";
+                    // Get the names of both players
+                    command.CommandText = "SELECT P1_name from Games where Game_ID=" + game;
+                    String player1 = (string)command.ExecuteScalar();
+                    command.CommandText = "SELECT P2_name from Games where Game_ID=" + game;
+                    String player2 = (string)command.ExecuteScalar();
+
+                    // Add P1's legal words
+                    command.CommandText = "SELECT Words from Words where Game_ID=" + game + " and Player_name='" + player1 + "' and Shared='No' and Legality='Yes'";
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            html += reader["Words"] + "</br>";
+                        }
+                    }
+                    html += "</td><td>";
+                    // Add P2's legal words
+                    command.CommandText = "SELECT Words from Words where Game_ID=" + game + " and Player_name='" + player2 + "' and Shared='No' and Legality='Yes'";
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            html += reader["Words"] + "</br>";
+                        }
+                    }
+                    html += "</td><td>";
+                    // Add the shared words
+                    command.CommandText = "SELECT Words from Words where Game_ID=" + game + " and Shared='Yes' and Player_name='" + player1 + "'";
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            html += reader["Words"] + "</br>";
+                        }
+                    }
+                    html += "</td><td>";
+                    // Add P1's illegal words
+                    command.CommandText = "SELECT Words from Words where Game_ID=" + game + " and Player_name='" + player1 + "' and Shared='No' and Legality='No'";
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            html += reader["Words"] + "</br>";
+                        }
+                    }
+                    html += "</td><td>";
+                    // Add P2's illegal words
+                    command.CommandText = "SELECT Words from Words where Game_ID=" + game + " and Player_name='" + player2 + "' and Shared='No' and Legality='No'";
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            html += reader["Words"] + "</br>";
+                        }
+                    }
+                    html += "</td></tr>";
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                return html;
+            }
+        }
+
+        private string getPlayer(string html, string name)
+        {
+            HashSet<UInt32> games = new HashSet<UInt32>();
+            html += "<h2> Player: " + name + "</h2>";
+            html += "<table border='1'> <tr><td>Game #:</td> <td>Date:</td> <td>Time:</td> <td>Opponent:</td> <td>Player score:</td> <td>Opponent score:</td> </tr>";
+
+            name = name.ToUpper();
+
+            // Connect to the DB
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand command = conn.CreateCommand();
+                    command.CommandText = "SELECT Game_ID from Games where P1_name='" + name + "' or P2_name='" + name + "'";
+
+                    // Store the games of the player in the hashset.
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            games.Add((UInt32)(reader["Game_ID"]));
+                        }
+                    }
+
+                    foreach (UInt32 game in games)
+                    {
+                        // Check games where the player was player1
+                        command.CommandText = "SELECT Date, Time, P1_name, P2_name, P1_score, P2_score from Games where Game_ID =" + game;
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // They are player 1
+                                if ((string)reader["P1_name"] == name)
+                                {
+                                    html += "<tr> <td>" + game + "</td><td> " + reader["Date"] + "</td><td>" + reader["Time"] + "</td><td>" + reader["P2_name"] + "</td><td>" + reader["P1_score"] + "</td><td>" + reader["P2_score"] + "</td></tr>";
+                                }
+                                // They are player 2
+                                else
+                                {
+                                    html += "<tr> <td>" + game + "</td><td> " + reader["Date"] + "</td><td>" + reader["Time"] + "</td><td>" + reader["P1_name"] + "</td><td>" + reader["P2_score"] + "</td><td>" + reader["P1_score"] + "</td></tr>";
+                                }
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                html += "</table></body>";
+                return html;
+            }
+        }
+
+        private string getAllGames(string html)
+        {
+            HashSet<String> players = new HashSet<String>();
+            html += "<h2>All the games! :D</h2>";
+            html += "<table border='1'> <tr><td>Player name:</td> <td>Games won:</td> <td>Games lost:</td> <td>Games tied:</td> </tr>";
+
+            // Connect to the DB
+            using (MySqlConnection conn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    MySqlCommand command = conn.CreateCommand();
+                    command.CommandText = "SELECT P1_name, P2_name from Games";
+
+                    // Store the names of all the players in the hashset.
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            players.Add((String)(reader["P1_name"]));
+                            players.Add((String)(reader["P2_name"]));
+                        }
+                    }
+
+                    // For each player: count the number of games where the player won, lost, and tied.
+                    int winCount = 0;
+                    int loseCount = 0;
+                    int tieCount = 0;
+
+                    foreach (String player in players)
+                    {
+                        // Check games where the player was player1
+                        command.CommandText = "SELECT P1_score, P2_score from Games where P1_name='" + player + "'";
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if ((int)(reader["P1_score"]) > (int)(reader["P2_score"]))
+                                {
+                                    winCount++;
+                                }
+                                else if ((int)(reader["P1_score"]) < (int)(reader["P2_score"]))
+                                {
+                                    loseCount++;
+                                }
+                                else
+                                {
+                                    tieCount++;
+                                }
+                            }
+                        }
+                        // Check games where player was player2.
+                        command.CommandText = "SELECT P1_score, P2_score from Games where P2_name='" + player + "'";
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if ((int)(reader["P2_score"]) > (int)(reader["P1_score"]))
+                                {
+                                    winCount++;
+                                }
+                                else if ((int)(reader["P2_score"]) < (int)(reader["P1_score"]))
+                                {
+                                    loseCount++;
+                                }
+                                else
+                                {
+                                    tieCount++;
+                                }
+                            }
+                        }
+                        html += "<tr> <td>" + player + "</td><td> " + winCount + "</td><td>" + loseCount + "</td><td>" + tieCount + "</td></tr>";
+
+                        winCount = 0;
+                        loseCount = 0;
+                        tieCount = 0;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+                html += "</table></body>";
+                return html;
+            }
+        }
+    }
+}

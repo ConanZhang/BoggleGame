@@ -1,0 +1,15 @@
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleClientModel\bin\Debug\BoggleClientModel.XML
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleClientModel\bin\Debug\BoggleClientModel.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleClientModel\bin\Debug\BoggleClientModel.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleClientModel\bin\Debug\StringSocketOfficial.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleClientModel\obj\Debug\BoggleClientModel.csprojResolveAssemblyReference.cache
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleClientModel\obj\Debug\BoggleClientModel.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS9\BoggleClientModel\obj\Debug\BoggleClientModel.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleClientModel\bin\Debug\BoggleClientModel.XML
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleClientModel\bin\Debug\BoggleClientModel.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleClientModel\bin\Debug\BoggleClientModel.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleClientModel\bin\Debug\MySql.Data.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleClientModel\bin\Debug\StringSocketOfficial.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleClientModel\obj\Debug\BoggleClientModel.csprojResolveAssemblyReference.cache
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleClientModel\obj\Debug\BoggleClientModel.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\BoggleClientModel\obj\Debug\BoggleClientModel.pdb

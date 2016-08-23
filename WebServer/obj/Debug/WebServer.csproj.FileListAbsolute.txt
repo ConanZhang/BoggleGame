@@ -1,0 +1,7 @@
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\WebServer\bin\Debug\WebServer.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\WebServer\bin\Debug\WebServer.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\WebServer\bin\Debug\MySql.Data.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\WebServer\bin\Debug\StringSocketOfficial.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\WebServer\obj\Debug\WebServer.dll
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\WebServer\obj\Debug\WebServer.pdb
+C:\Users\conanz\Documents\CS3500\Assignments\PS10\WebServer\obj\Debug\WebServer.csprojResolveAssemblyReference.cache

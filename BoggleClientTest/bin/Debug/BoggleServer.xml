@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BoggleServer</name>
+    </assembly>
+    <members>
+        <member name="T:BoggleClient.BoggleBoard">
+            <summary>
+            Represents a Boggle board.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleBoard.#ctor">
+            <summary>
+            Creates a randomly-generated BoggleBoard 
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleBoard.#ctor(System.String)">
+            <summary>
+            Creates a BoggleBoard from the provided 16-letter string.  The
+            method is case-insensitive.  If there aren't exactly 16 letters
+            in the string, throws an ArgumentException.  The string consists
+            of the first row, then the second row, then the third, then the fourth.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleBoard.MakeBoard(System.String)">
+            <summary>
+            Makes a board from the 16-letter string
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleBoard.ToString">
+            <summary>
+            Returns the 16 letters that make up this board.  It is formed
+            by appending the first row to the second row to the third row
+            to the fourth row.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BoggleClient.BoggleBoard.CanBeFormed(System.String)">
+            <summary>
+            Reports whether the provided word can be formed by tracking through
+            this Boggle board as described in the rules of Boggle.  The method
+            is case-insensitive.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleBoard.CanBeFormed(System.String,System.Int32,System.Int32,System.Boolean[0:,0:])">
+            <summary>
+            Reports whether the provided word can be formed by tracking through
+            this Boggle board by beginning at location [i,j] and avoiding any
+            squares marked as visited.
+            </summary>
+        </member>
+        <member name="T:BoggleClient.BoggleServer">
+            <summary>
+            Server to receive and send boggle information.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleServer.#ctor(System.Int32,System.Collections.Generic.HashSet{System.String})">
+            <summary>
+            Two-argument constructor that takes the time limit for the game and the path
+            for the list of legal words.
+            </summary>
+            <param name="time"></param>
+            <param name="dictionary"></param>
+        </member>
+        <member name="M:BoggleClient.BoggleServer.#ctor(System.Int32,System.Collections.Generic.HashSet{System.String},System.String)">
+            <summary>
+            Three-argument constructor that calls the two-argument constructor,
+            but also initializes the board so that it matches the string provided by the user.
+            </summary>
+            <param name="time"></param>
+            <param name="dictionary"></param>
+            <param name="boardSetup"></param>
+        </member>
+        <member name="M:BoggleClient.BoggleServer.#ctor(System.Int32,System.Collections.Generic.HashSet{System.String},System.String,System.Int32)">
+            <summary>
+            Alternate four-argument constructor for the purpose of testing that allows you to pick a different port.
+            </summary>
+            <param name="time"></param>
+            <param name="dictionary"></param>
+            <param name="boardSetup"></param>
+            <param name="port"></param>
+        </member>
+        <member name="M:BoggleClient.BoggleServer.AcceptConnection(System.IAsyncResult)">
+            <summary>
+            Callback for when we receive a connection to accept.
+            </summary>
+            <param name="result"></param>
+        </member>
+        <member name="M:BoggleClient.BoggleServer.receiveName(System.String,System.Exception,System.Object)">
+            <summary>
+            Callback for when we receive a client's name.
+            </summary>
+            <param name="input"></param>
+            <param name="e"></param>
+            <param name="ss"></param>
+        </member>
+        <member name="M:BoggleClient.BoggleServer.pairIfPossible">
+            <summary>
+            Check if we can make a match and make one if possible.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.BoggleServer.checkFormat(System.String,System.String,System.Object)">
+            <summary>
+            Checks if the command a client sent was valid.
+            </summary>
+            <param name="keyword"></param>
+            <param name="input"></param>
+            <param name="ss"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BoggleClient.BoggleServer.scoreWord(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="word"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BoggleClient.Client">
+            <summary>
+            Groups information regarding Clients to store in queue.
+            </summary>
+        </member>
+        <member name="T:BoggleClient.Match">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:BoggleClient.Match.#ctor(BoggleClient.Client,BoggleClient.Client,System.Int32,BoggleClient.BoggleBoard,System.Collections.Generic.HashSet{System.String})">
+            <summary>
+            
+            </summary>
+            <param name="p1"></param>
+            <param name="p2"></param>
+            <param name="time"></param>
+            <param name="bb"></param>
+            <param name="d"></param>
+        </member>
+        <member name="M:BoggleClient.Match.updateGame(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            Update current match
+            </summary>
+            <param name="source"></param>
+            <param name="ev"></param>
+        </member>
+        <member name="M:BoggleClient.Match.updateDatabase">
+            <summary>
+            Send information to database.
+            </summary>
+        </member>
+        <member name="M:BoggleClient.Match.GetWords(System.Collections.Generic.HashSet{System.String})">
+            <summary>
+            Compile words from a set of words into a string.
+            </summary>
+            <param name="words"></param>
+        </member>
+        <member name="M:BoggleClient.Match.receiveCallback(System.String,System.Exception,System.Object)">
+            <summary>
+            Callback for when the server receieves words.
+            </summary>
+            <param name="input"></param>
+            <param name="ex"></param>
+            <param name="p"></param>
+        </member>
+    </members>
+</doc>
